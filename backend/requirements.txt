@@ -13,6 +13,7 @@ scikit-learn
 # librosa
 # resemblyzer
 dlib
+face-recognition
 face-recognition-models
 Pillow
 setuptools
