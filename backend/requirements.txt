@@ -15,4 +15,4 @@ scikit-learn
 dlib
 face-recognition-models
 Pillow
-setuptools>=70
+setuptools
