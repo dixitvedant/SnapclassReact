@@ -16,4 +16,4 @@ dlib
 face-recognition
 face-recognition-models
 Pillow
-setuptools
+setuptools==80.9.0
