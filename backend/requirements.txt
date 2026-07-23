@@ -10,8 +10,8 @@ numpy
 pandas
 opencv-python
 scikit-learn
-librosa
-resemblyzer
+# librosa
+# resemblyzer
 dlib
 face-recognition-models
 Pillow
