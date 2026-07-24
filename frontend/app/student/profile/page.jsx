@@ -6,6 +6,7 @@ import { User, Mail, Phone, ShieldCheck, ScanFace, Mic } from "lucide-react";
 
 import StudentTopbar from "../components/StudentTopbar";
 import AuthGuard from "../components/AuthGuard";
+import { apiFetch } from "@/lib/api";
 
 export default function ProfilePage() {
   const [data, setData] = useState(null);
@@ -24,16 +25,8 @@ export default function ProfilePage() {
   async function loadProfile() {
     const studentId = localStorage.getItem("student_id");
 
-    const token = localStorage.getItem("token");
+    const res = await apiFetch(`/student-profile/${studentId}`);
 
-const res = await fetch(
-  `http://127.0.0.1:8000/student-profile/${studentId}`,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }
-);
     const result = await res.json();
 
     if (result.success) {
@@ -50,28 +43,20 @@ const res = await fetch(
   async function saveProfile() {
     const studentId = localStorage.getItem("student_id");
 
-   const token =
-  localStorage.getItem("token");
+    const res = await apiFetch(`/student-profile/update/${studentId}`, {
+      method: "PUT",
 
-const res = await fetch(
-  `http://127.0.0.1:8000/student-profile/update/${studentId}`,
-  {
-    method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-    headers: {
-      "Content-Type": "application/json",
+      body: JSON.stringify({
+        student_email: studentEmail,
+        parent_email: parentEmail,
+        parent_mobile: parentMobile,
+      }),
+    });
 
-      Authorization:
-        `Bearer ${token}`
-    },
-
-    body: JSON.stringify({
-      student_email: studentEmail,
-      parent_email: parentEmail,
-      parent_mobile: parentMobile,
-    }),
-  },
-);
     const result = await res.json();
 
     if (result.success) {
@@ -462,6 +447,5 @@ function StatusCard({ title, status, icon }) {
         </div>
       </div>
     </div>
-
   );
 }

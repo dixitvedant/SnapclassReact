@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { apiFetch } from "@/lib/api";
 
 export default function ForgotPassword() {
   const router = useRouter();
@@ -31,21 +32,17 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        "http://127.0.0.1:8000/student-forgot/send-otp",
+      const res = await apiFetch("/student-forgot/send-otp", {
+        method: "POST",
 
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            username,
-          }),
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+
+        body: JSON.stringify({
+          username,
+        }),
+      });
 
       const result = await res.json();
 
@@ -79,22 +76,18 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        "http://127.0.0.1:8000/student-forgot/verify-otp",
+      const res = await apiFetch("/student-forgot/verify-otp", {
+        method: "POST",
 
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            username,
-            otp,
-          }),
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+
+        body: JSON.stringify({
+          username,
+          otp,
+        }),
+      });
 
       const result = await res.json();
 
@@ -128,22 +121,18 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        "http://127.0.0.1:8000/student-forgot/reset-password",
+      const res = await apiFetch("/student-forgot/reset-password", {
+        method: "POST",
 
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            username,
-            new_password: newPassword,
-          }),
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+
+        body: JSON.stringify({
+          username,
+          new_password: newPassword,
+        }),
+      });
 
       const result = await res.json();
 

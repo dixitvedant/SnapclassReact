@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import StudentTopbar from "../components/StudentTopbar";
 import MetricCard from "../components/MetricCard";
 import AuthGuard from "../components/AuthGuard";
+import { apiFetch } from "@/lib/api";
 
 export default function AttendancePage() {
   const [data, setData] = useState(null);
@@ -34,13 +35,7 @@ export default function AttendancePage() {
   async function loadSubjects() {
     const id = localStorage.getItem("student_id");
 
-    const token = localStorage.getItem("token");
-
-    const res = await fetch(`http://127.0.0.1:8000/dashboard/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiFetch(`/dashboard/${id}`);
 
     const result = await res.json();
 
@@ -51,16 +46,7 @@ export default function AttendancePage() {
 
   async function loadAttendance(id) {
     try {
-      const token = localStorage.getItem("token");
-
-      const res = await fetch(
-        `http://127.0.0.1:8000/student-attendance/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const res = await apiFetch(`/student-attendance/${id}`);
 
       if (!res.ok) {
         throw new Error("API Error");

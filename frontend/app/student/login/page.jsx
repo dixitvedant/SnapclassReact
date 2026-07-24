@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Webcam from "react-webcam";
 import toast from "react-hot-toast";
+import { apiFetch } from "@/lib/api";
 
 import { GraduationCap, Camera } from "lucide-react";
 
@@ -21,18 +22,16 @@ export default function StudentLogin() {
 
   const [studentId, setStudentId] = useState(null);
 
-
   //Verify Credentials before Face Login
 
   async function verifyCredentials() {
     if (!username || !password) {
       toast.error("Enter Username and Password");
-
       return;
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/student-auth/login", {
+      const response = await apiFetch("/student-auth/login", {
         method: "POST",
 
         headers: {
@@ -52,21 +51,12 @@ export default function StudentLogin() {
         return;
       }
 
-      localStorage.setItem(
-  "token",
-  result.token
-);
+      localStorage.setItem("token", result.token);
+      localStorage.setItem("student_id", result.student_id);
 
-localStorage.setItem(
-  "student_id",
-  result.student_id
-);
+      setStudentId(result.student_id);
 
-setStudentId(
-  result.student_id
-);
-
-setCredentialVerified(true);
+      setCredentialVerified(true);
 
       toast.success("Credentials Verified");
     } catch (err) {
@@ -98,7 +88,7 @@ setCredentialVerified(true);
 
       formData.append("file", blob, "face.jpg");
 
-      const response = await fetch("http://127.0.0.1:8000/face/login", {
+      const response = await apiFetch("/face/login", {
         method: "POST",
         body: formData,
       });
@@ -242,7 +232,8 @@ setCredentialVerified(true);
               text-sm
               "
             >
-AI-Based Biometric Authentication Module            </p>
+              AI-Based Biometric Authentication Module{" "}
+            </p>
           </div>
         </div>
 
@@ -366,12 +357,11 @@ AI-Based Biometric Authentication Module            </p>
           <div className="mt-5 space-y-3">
             {/* Scan Again */}
 
-         {
-  credentialVerified && (
-    <button
-      onClick={handleFaceLogin}
-      disabled={loading}
-      className="
+            {credentialVerified && (
+              <button
+                onClick={handleFaceLogin}
+                disabled={loading}
+                className="
       w-full
       h-14
       rounded-2xl
@@ -382,15 +372,10 @@ AI-Based Biometric Authentication Module            </p>
       font-bold
       shadow-lg
       "
-    >
-      {
-        loading
-          ? "Checking Face..."
-          : "Scan Face"
-      }
-    </button>
-  )
-}
+              >
+                {loading ? "Checking Face..." : "Scan Face"}
+              </button>
+            )}
             <button
               onClick={() => router.push("/forgot-password")}
               className="

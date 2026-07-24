@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import MetricCard from "../../components/MetricCard";
 import AuthGuard from "../../components/AuthGuard";
+import { apiFetch } from "@/lib/api";
 
 export default function SubjectDetailsPage() {
   const params = useParams();
@@ -20,16 +21,7 @@ export default function SubjectDetailsPage() {
   }, []);
 
   async function loadSubject(studentId) {
-    const token = localStorage.getItem("token");
-
-    const res = await fetch(
-      `http://127.0.0.1:8000/student-subject/${studentId}/${subjectId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
+    const res = await apiFetch(`/student-subject/${studentId}/${subjectId}`);
 
     const result = await res.json();
 

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import AuthGuard from "../components/AuthGuard";
+import { apiFetch } from "@/lib/api";
 
 export default function StudentCalendarPage() {
   const [events, setEvents] = useState([]);
@@ -18,16 +19,8 @@ export default function StudentCalendarPage() {
     try {
       const studentId = localStorage.getItem("student_id");
 
-      const token = localStorage.getItem("token");
+      const res = await apiFetch(`/student-calendar/${studentId}`);
 
-      const res = await fetch(
-        `http://127.0.0.1:8000/student-calendar/${studentId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
       const result = await res.json();
 
       if (result.success) {

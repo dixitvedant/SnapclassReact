@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import StudentTopbar from "../components/StudentTopbar";
 import NotificationCard from "../components/NotificationCard";
 import AuthGuard from "../components/AuthGuard";
+import { apiFetch } from "@/lib/api";
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
@@ -25,14 +26,7 @@ export default function NotificationsPage() {
       const token = localStorage.getItem("token");
       console.log("TOKEN =", token);
 
-      const res = await fetch(
-        `http://127.0.0.1:8000/student-notifications/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const res = await apiFetch(`/student-notifications/${id}`);
 
       const result = await res.json();
 

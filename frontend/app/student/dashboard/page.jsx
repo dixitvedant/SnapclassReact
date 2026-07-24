@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Plus, X } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { apiFetch } from "@/lib/api";
 
 import StudentTopbar from "../components/StudentTopbar";
 import MetricCard from "../components/MetricCard";
@@ -34,19 +35,12 @@ export default function StudentDashboard() {
 
     console.log(token);
 
-    const res = await fetch(
-      `http://127.0.0.1:8000/dashboard/${studentId}`,
-
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
+    const res = await apiFetch(`/dashboard/${studentId}`);
 
     const result = await res.json();
 
     console.log(result);
+
     if (result.success) {
       setData(result.dashboard);
     } else {
@@ -62,14 +56,11 @@ export default function StudentDashboard() {
       return;
     }
 
-    const token = localStorage.getItem("token");
-
-    const res = await fetch("http://127.0.0.1:8000/enroll/code", {
+    const res = await apiFetch("/enroll/code", {
       method: "POST",
 
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
 
       body: JSON.stringify({
@@ -95,14 +86,11 @@ export default function StudentDashboard() {
   async function unEnroll(subjectId) {
     const studentId = localStorage.getItem("student_id");
 
-    const token = localStorage.getItem("token");
-
-    const res = await fetch("http://127.0.0.1:8000/unenroll/", {
+    const res = await apiFetch("/unenroll/", {
       method: "POST",
 
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
 
       body: JSON.stringify({

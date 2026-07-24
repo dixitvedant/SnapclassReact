@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { GraduationCap, Bell, User, Eye } from "lucide-react";
 import { LogOut } from "lucide-react";
+import { apiFetch } from "@/lib/api";
 
 import Link from "next/link";
 
@@ -17,16 +18,8 @@ export default function StudentTopbar({ name, studentId }) {
 
       if (!studentId) return;
 
-      const token = localStorage.getItem("token");
+      const res = await apiFetch(`/student-notifications/${studentId}`);
 
-      const res = await fetch(
-        `http://127.0.0.1:8000/student-notifications/${studentId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
       const result = await res.json();
 
       if (result.success) {

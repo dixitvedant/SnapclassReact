@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { GraduationCap, Camera, Home } from "lucide-react";
+import { apiFetch } from "@/lib/api";
 
 export default function StudentRegister() {
   const router = useRouter();
@@ -103,7 +104,7 @@ export default function StudentRegister() {
 
       data.append("image", blob, "face.jpg");
 
-      const response = await fetch("http://127.0.0.1:8000/student/register", {
+      const response = await apiFetch("/student/register", {
         method: "POST",
         body: data,
       });
